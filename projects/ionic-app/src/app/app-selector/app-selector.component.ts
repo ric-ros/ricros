@@ -5,7 +5,6 @@ import { AppComponent as HomeAppComponent } from '../home/app.component';
 import { Platform } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { DARK_MODE } from '../shared/utils/injection-tokens';
 import { ThemeService } from '../shared/services/theme-service.service';
 
 enum BREAK_POINTS {
@@ -32,12 +31,24 @@ export class AppSelectorComponent implements OnDestroy {
   constructor(private platform: Platform, private router: Router) {
     this.themeService.setTheme();
 
+    // Decomment this to enable mobile app with the TABS navigation.
+    // Routes and components are already defined in the mobile folder and ready to go!.
+    /*
     this.isMobile =
       !this.platform.is('desktop') || this.platform.width() < BREAK_POINTS.MD;
 
     this.checkRoutes(platform, router);
+    */
+
+    // In the meantime, we will force the SIDEBAR navigation.
+    this.isMobile = false;
   }
 
+  /**
+   * Check if the user is on mobile or desktop and navigate to the correct page.
+   * @param platform from ionic to check if the user is on mobile or desktop
+   * @param router to navigate to the correct page
+   */
   checkRoutes(platform: Platform, router: Router) {
     if (this.isMobile) {
       router.navigate(['/mobile']);
@@ -52,12 +63,10 @@ export class AppSelectorComponent implements OnDestroy {
         .asObservable()
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.isMobile =
-            this.isMobile != platform.width() < BREAK_POINTS.MD
-              ? platform.width() < BREAK_POINTS.MD
-              : this.isMobile;
-
-          router.navigate([this.isMobile ? '/mobile' : '/home']);
+          if (this.isMobile != platform.width() < BREAK_POINTS.MD) {
+            this.isMobile = platform.width() < BREAK_POINTS.MD;
+            router.navigate([this.isMobile ? '/mobile' : '/home']);
+          }
         });
     }
   }
