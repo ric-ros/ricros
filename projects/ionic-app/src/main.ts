@@ -21,6 +21,7 @@ bootstrapApplication(AppSelectorComponent, {
     { provide: DARK_MODE, useValue: DARK_MODE_DEFAULT },
     importProvidersFrom(
       IonicModule.forRoot({
+
         platform: {
           /** The default `desktop` function returns false for devices with a touchscreen.
            * This is not always wanted, so this function tests the User Agent instead.

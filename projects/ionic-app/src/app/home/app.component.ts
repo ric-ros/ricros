@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { AppHomeItem } from '../shared/types/appHomePages';
@@ -21,12 +21,12 @@ export class AppComponent {
   public themeService: ThemeService = inject(ThemeService);
 
   public appPages: AppHomeItem[] = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+    { title: 'Inbox', url: '/home/folder/inbox', icon: 'mail' },
+    { title: 'Outbox', url: '/home/folder/outbox', icon: 'paper-plane' },
+    { title: 'Favorites', url: '/home/folder/favorites', icon: 'heart' },
+    { title: 'Archived', url: '/home/folder/archived', icon: 'archive' },
+    { title: 'Trash', url: '/home/folder/trash', icon: 'trash' },
+    { title: 'Spam', url: '/home/folder/spam', icon: 'warning' },
   ];
 
   public labels = ['Family', 'Friends', 'Work', 'Notes'];
