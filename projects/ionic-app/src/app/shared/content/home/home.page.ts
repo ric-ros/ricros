@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { PlatformService } from '../../services/platform.service';
 import { Message } from '../../types/message';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -30,13 +30,17 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
 
-    switch (this.folder) {
+    switch (this.folder?.toLocaleLowerCase()) {
       case 'favorites':
         this.messages$ = this.dataService.favoriteMessages$;
         break;
 
-      default:
+      case 'inbox':
         this.messages$ = this.dataService.inboxMessages$;
+        break;
+
+      default:
+        this.messages$ = of([]);
         break;
     }
   }
