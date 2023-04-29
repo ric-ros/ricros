@@ -51,15 +51,17 @@ export class DataService {
     return this._inbox.pipe(shareReplay());
   }
 
-  public get favoriteMessages$() {
+  public get favoriteMessages$(): Observable<Message[]> {
     return this.inboxMessages$.pipe(
-      switchMap((messages) => messages.filter((message) => message.important))
+      map((messages) => messages.filter((message) => message.important)),
+      shareReplay()
     );
   }
 
   public getMessageById$(messageId: number) {
     return this.inboxMessages$.pipe(
-      map((messages) => messages.find((message) => message.id === messageId))
+      map((messages) => messages.find((message) => message.id === messageId)),
+      shareReplay()
     );
   }
 

@@ -30,7 +30,15 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
 
-    this.messages$ = this.dataService.inboxMessages$;
+    switch (this.folder) {
+      case 'favorites':
+        this.messages$ = this.dataService.favoriteMessages$;
+        break;
+
+      default:
+        this.messages$ = this.dataService.inboxMessages$;
+        break;
+    }
   }
 
   refresh(ev: any) {
