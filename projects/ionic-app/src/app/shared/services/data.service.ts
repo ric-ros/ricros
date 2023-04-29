@@ -98,7 +98,7 @@ export class DataService {
   }
 
   private saveInLocalStorage(messages: Message[]): void {
-    // localStorage.setItem('messages', JSON.stringify(messages));
+    localStorage.setItem('messages', JSON.stringify(messages));
   }
 
   private loadMessages(): Message[] | null {
