@@ -26,7 +26,11 @@ export class AppComponent {
     { title: 'Favorites', url: '/home/favorites', icon: 'heart' },
     { title: 'Archived', url: '/home/archived', icon: 'archive' },
     { title: 'Trash', url: '/home/trash', icon: 'trash' },
-    { title: 'Spam', url: '/home/spam', icon: 'warning' },
+    {
+      title: 'Curriculum',
+      url: '/home/curriculum-vitae',
+      icon: 'document-text',
+    },
   ];
 
   public labels = ['Family', 'Friends', 'Work', 'Notes'];

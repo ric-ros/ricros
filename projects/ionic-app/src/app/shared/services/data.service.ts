@@ -4,7 +4,7 @@ import {
   MessageExperienceContentEnum,
   MessageExperienceFormattedContentEnum,
   inboxMessages,
-} from '../messages/inbox-message-content';
+} from '../content/email/message/messages/inbox-message-content';
 import {
   BehaviorSubject,
   Observable,

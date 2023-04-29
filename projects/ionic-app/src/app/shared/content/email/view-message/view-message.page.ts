@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { DataService } from '../../services/data.service';
-import { Message } from '../../types/message';
+import { DataService } from '../../../services/data.service';
+import { Message } from '../../../types/message';
 import { Observable } from 'rxjs';
 
 @Component({

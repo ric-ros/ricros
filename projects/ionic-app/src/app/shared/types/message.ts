@@ -1,7 +1,7 @@
 import {
   MessageExperienceContentEnum,
   MessageExperienceFormattedContentEnum,
-} from '../messages/inbox-message-content';
+} from '../content/email/message/messages/inbox-message-content';
 
 export type Message = {
   id: number;

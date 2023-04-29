@@ -8,9 +8,9 @@ import {
 import { IonicModule, IonItemSliding } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
-import { DataService } from '../../services/data.service';
-import { PlatformService } from '../../services/platform.service';
-import { Message } from '../../types/message';
+import { DataService } from '../../../services/data.service';
+import { PlatformService } from '../../../services/platform.service';
+import { Message } from '../../../types/message';
 
 @Component({
   selector: 'app-message',

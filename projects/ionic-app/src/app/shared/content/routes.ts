@@ -4,10 +4,20 @@ export const MESSAGE_ROUTES: Routes = [
   {
     path: ':messageId',
     loadComponent: () =>
-      import('./view-message/view-message.page').then((m) => m.ViewMessagePage),
+      import('./email/view-message/view-message.page').then(
+        (m) => m.ViewMessagePage
+      ),
   },
   {
     path: '',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    loadComponent: () =>
+      import('./email/home/home.page').then((m) => m.HomePage),
+  },
+];
+
+export const CV_ROUTES: Routes = [
+  {
+    path: 'curriculum-vitae',
+    loadComponent: () => import('./CV/cv.component').then((m) => m.CvComponent),
   },
 ];

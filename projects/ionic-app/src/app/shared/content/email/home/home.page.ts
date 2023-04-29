@@ -1,13 +1,13 @@
 import { Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { IonicModule, RefresherCustomEvent } from '@ionic/angular';
-import { MessageComponent } from '../message/message.component';
 
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../../services/data.service';
-import { PlatformService } from '../../services/platform.service';
-import { Message } from '../../types/message';
+import { DataService } from '../../../services/data.service';
+import { PlatformService } from '../../../services/platform.service';
+import { Message } from '../../../types/message';
 import { Observable, of } from 'rxjs';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-home',
