@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkionic_app=self.webpackChunkionic_app||[]).push([[2404],{2404:(h,s,n)=>{n.r(s),n.d(s,{MESSAGE_ROUTES:()=>t});const t=[{path:":messageId",loadComponent:()=>Promise.all([n.e(8592),n.e(3230)]).then(n.bind(n,3230)).then(o=>o.ViewMessagePage)},{path:"",loadComponent:()=>Promise.all([n.e(8592),n.e(6466)]).then(n.bind(n,6466)).then(o=>o.HomePage)}]}}]);
