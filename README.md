@@ -1,3 +1,3 @@
 # Ricros
 
-Coming soon. 
+Coming soon. Preview on [Vercel](https://ricros.vercel.app/)
