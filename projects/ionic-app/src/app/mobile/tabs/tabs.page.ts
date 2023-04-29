@@ -1,7 +1,7 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DARK_MODE } from '../../shared/utils/injection-tokens';
-import { ThemeService } from '../../shared/services/theme-service.service';
+import { ThemeService } from '../../shared/services/theme.service';
 import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({

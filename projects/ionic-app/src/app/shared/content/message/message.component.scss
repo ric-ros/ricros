@@ -45,12 +45,26 @@ ion-item ion-note.md {
   height: 12px;
   width: 12px;
   border-radius: 50%;
+  border: 1px solid var(--ion-color-primary);
   align-self: start;
   margin: 16px 10px 16px 16px;
 }
 
 .dot-unread {
-  background: var(--ion-color-primary);
+  background: var(--ion-color-secondary);
+}
+
+.star:before {
+  content: "\2606";
+  color: var(--ion-color-primary);
+  margin: 16px 10px 16px 16px;
+}
+
+/* Filled Star */
+.star-checked:before {
+  content: "\2605";
+  color: var(--ion-color-tertiary);
+  margin: 16px 10px 16px 16px;
 }
 
 ion-footer ion-title {

@@ -19,9 +19,26 @@
   </ion-header>
 
   <ion-list>
-    <app-message
-      *ngFor="let message of getMessages()"
-      [message]="message"
-    ></app-message>
+    <ng-container *ngIf="(messages$ | async) as messages; else loading">
+      <app-message
+        *ngFor="let message of messages"
+        [message]="message"
+      ></app-message>
+    </ng-container>
+    <ng-template #loading>
+      <ion-item *ngFor="let skeleton of [1, 2, 3, 4]">
+        <ion-label>
+          <h3>
+            <ion-skeleton-text [animated]="true" style="width: 30%; height: 20px;"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 60%; height: 15px;"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 90%;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ng-template>
   </ion-list>
 </ion-content>

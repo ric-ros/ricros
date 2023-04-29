@@ -5,7 +5,7 @@ import { AppComponent as HomeAppComponent } from '../home/app.component';
 import { Platform } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { ThemeService } from '../shared/services/theme-service.service';
+import { ThemeService } from '../shared/services/theme.service';
 
 enum BREAK_POINTS {
   XS = 0,

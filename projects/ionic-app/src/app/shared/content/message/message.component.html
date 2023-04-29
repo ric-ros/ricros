@@ -1,31 +1,44 @@
-<ion-item
-  *ngIf="message"
-  [routerLink]="message.id.toString()"
-  [detail]="false"
->
-  <div slot="start" [class]="!message.read ? 'dot dot-unread' : 'dot'"></div>
-  <ion-label class="ion-text-wrap">
-    <h2>
-      {{ message.fromName }}
-      <span class="date">
-        <ion-note>{{ message.date }}</ion-note>
-        <ion-icon
-          aria-hidden="true"
-          name="chevron-forward"
-          size="small"
-          *ngIf="isIos()"
-        ></ion-icon>
-      </span>
-    </h2>
-    <h3>{{ message.subject }}</h3>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
-  </ion-label>
-</ion-item>
+<ng-container *ngIf="message">
+  <ion-item-sliding #itemSlidingSection>
+    <ion-item-options side="start" (ionSwipe)="markRead(message.id)">
+      <ion-item-option color="secondary" expandable (click)="markRead(message.id)">
+        {{ message.read ? "Mark as Unread" : "Mark as Read" }}
+      </ion-item-option>
+    </ion-item-options>
+
+    <ion-item [routerLink]="message.id.toString()" [detail]="false">
+      <div
+        slot="start"
+        class="dot"
+        [ngClass]="{ 'dot-unread': !message.read }"
+      ></div>
+      <div
+        slot="end"
+        class="star"
+        [ngClass]="{ 'star-checked': message.important }"
+      ></div>
+      <ion-label class="ion-text-wrap">
+        <h2>
+          {{ message.fromName }}
+          <span class="date">
+            <ion-note>{{ message.date }}</ion-note>
+            <ion-icon
+              aria-hidden="true"
+              name="chevron-forward"
+              size="small"
+              *ngIf="platform.isIos()"
+            ></ion-icon>
+          </span>
+        </h2>
+        <h3>{{ message.subject }}</h3>
+        <p>{{ message.content }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item-options side="end" (ionSwipe)="markImportant(message.id)">
+      <ion-item-option color="tertiary" expandable (click)="markImportant(message.id)">
+        {{ message.important ? "Mark as Unimportant" : "Mark as Important" }}
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ng-container>

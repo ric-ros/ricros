@@ -2,35 +2,40 @@ import { Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { IonicModule, RefresherCustomEvent } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
 
-import { NgForOf } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { DataService, Message } from '../../services/data.service';
+import { DataService } from '../../services/data.service';
+import { PlatformService } from '../../services/platform.service';
+import { Message } from '../../types/message';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, MessageComponent, NgForOf],
+  imports: [IonicModule, MessageComponent, NgForOf, NgIf, AsyncPipe],
 })
 export class HomePage implements OnInit {
-  private data = inject(DataService);
   private activatedRoute = inject(ActivatedRoute);
+  private dataService = inject(DataService);
+  platformService = inject(PlatformService);
+
   folder: string | null = null;
+
+  public messages$: Observable<Message[]> | undefined;
 
   constructor() {}
 
   ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+
+    this.messages$ = this.dataService.inboxMessages$;
   }
 
   refresh(ev: any) {
     setTimeout(() => {
       (ev as RefresherCustomEvent).detail.complete();
-    }, 3000);
-  }
-
-  getMessages(): Message[] {
-    return this.data.getMessages();
+    }, 1000);
   }
 }

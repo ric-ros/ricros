@@ -3,11 +3,14 @@ import {
   Component,
   inject,
   Input,
+  ViewChild,
 } from '@angular/core';
-import { IonicModule, Platform } from '@ionic/angular';
+import { IonicModule, IonItemSliding } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
-import { Message } from '../../services/data.service';
+import { NgClass, NgIf } from '@angular/common';
+import { DataService } from '../../services/data.service';
+import { PlatformService } from '../../services/platform.service';
+import { Message } from '../../types/message';
 
 @Component({
   selector: 'app-message',
@@ -15,23 +18,27 @@ import { Message } from '../../services/data.service';
   styleUrls: ['./message.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [IonicModule, RouterLink, NgIf],
+  imports: [IonicModule, RouterLink, NgIf, NgClass],
 })
 export class MessageComponent {
-  private platform = inject(Platform);
-  @Input() message: Message;
+  public platform = inject(PlatformService);
+  public dataService = inject(DataService);
 
-  constructor() {
-    this.message = {
-      fromName: 'No name',
-      subject: 'Error loading message',
-      date: 'No date',
-      id: 0,
-      read: false,
-    };
+  @ViewChild(IonItemSliding) itemSlidingSection: IonItemSliding | undefined;
+
+  @Input() message: Message | undefined;
+
+  constructor() {}
+
+  public markRead(messageId: number): void {
+    this.dataService.toggleRead(messageId);
+
+    this.itemSlidingSection?.closeOpened();
   }
 
-  isIos() {
-    return this.platform.is('ios');
+  public markImportant(messageId: number): void {
+    this.dataService.toggleImportant(messageId);
+
+    this.itemSlidingSection?.closeOpened();
   }
 }

@@ -1,83 +1,121 @@
 import { Injectable } from '@angular/core';
-
-export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
-  read: boolean;
-}
+import { Message } from '../types/message';
+import {
+  MessageExperienceContentEnum,
+  MessageExperienceFormattedContentEnum,
+  inboxMessages,
+} from '../messages/inbox-message-content';
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  Subject,
+  delay,
+  map,
+  of,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+  timer,
+} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
-  public messages: Message[] = [
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 0,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 1,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 2,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 3,
-      read: false
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 4,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 5,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 6,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 7,
-      read: false
-    }
-  ];
+  private _inbox = new ReplaySubject<Message[]>();
 
-  constructor() { }
+  constructor() {
+    this._inbox.pipe(tap((messages) => this.saveInLocalStorage(messages)));
 
-  public getMessages(): Message[] {
-    return this.messages;
+    // simulate network latency
+    timer(1000)
+      .pipe(take(1))
+      .subscribe(() => {
+        this._inbox.next(this._fetchInboxMessages());
+      });
   }
 
-  public getMessageById(id: number): Message {
-    return this.messages[id];
+  private _fetchInboxMessages(): Message[] {
+    let messages = this.loadMessages();
+
+    if (!messages) {
+      messages = inboxMessages;
+    }
+
+    return messages;
+  }
+
+  public get inboxMessages$() {
+    return this._inbox.pipe(shareReplay());
+  }
+
+  public get favoriteMessages$() {
+    return this.inboxMessages$.pipe(
+      switchMap((messages) => messages.filter((message) => message.important))
+    );
+  }
+
+  public getMessageById$(messageId: number) {
+    return this.inboxMessages$.pipe(
+      map((messages) => messages.find((message) => message.id === messageId))
+    );
+  }
+
+  public deleteMessage(messageId: number): void {
+    this._inbox.next(
+      this._fetchInboxMessages().filter((message) => message.id !== messageId)
+    );
+  }
+
+  public toggleRead(messageId: number): void {
+    this._inbox.next(
+      this._fetchInboxMessages().map((message) => {
+        if (message.id === messageId) {
+          message.read = !message.read;
+        }
+
+        return message;
+      })
+    );
+  }
+
+  public toggleImportant(messageId: number): void {
+    this._inbox.next(
+      this._fetchInboxMessages().map((message) => {
+        if (message.id === messageId) {
+          message.important = !message.important;
+        }
+
+        return message;
+      })
+    );
+  }
+
+  public getUnreadCount(): number {
+    return this._fetchInboxMessages().filter((message) => !message.read).length;
+  }
+
+  private saveInLocalStorage(messages: Message[]): void {
+    // localStorage.setItem('messages', JSON.stringify(messages));
+  }
+
+  private loadMessages(): Message[] | null {
+    const messages = localStorage.getItem('messages');
+
+    if (messages) {
+      return JSON.parse(messages) as Message[];
+    }
+
+    return null;
+  }
+
+  private clearLocalStorage(): void {
+    localStorage.removeItem('messages');
+  }
+
+  public reset(): void {
+    this.clearLocalStorage();
   }
 }
