@@ -27,7 +27,7 @@ export class DataService {
   private _inbox = new ReplaySubject<Message[]>();
 
   constructor() {
-    this._inbox.pipe(tap((messages) => this.saveInLocalStorage(messages)));
+    this._inbox.subscribe((messages) => this.saveInLocalStorage(messages));
 
     // simulate network latency
     timer(1000)
@@ -48,20 +48,18 @@ export class DataService {
   }
 
   public get inboxMessages$() {
-    return this._inbox.pipe(shareReplay());
+    return this._inbox.asObservable();
   }
 
   public get favoriteMessages$(): Observable<Message[]> {
     return this.inboxMessages$.pipe(
       map((messages) => messages.filter((message) => message.important)),
-      shareReplay()
     );
   }
 
   public getMessageById$(messageId: number) {
     return this.inboxMessages$.pipe(
-      map((messages) => messages.find((message) => message.id === messageId)),
-      shareReplay()
+      map((messages) => messages.find((message) => message.id === messageId))
     );
   }
 
@@ -71,11 +69,11 @@ export class DataService {
     );
   }
 
-  public toggleRead(messageId: number): void {
+  public toggleRead(messageId: number, read?: boolean): void {
     this._inbox.next(
       this._fetchInboxMessages().map((message) => {
         if (message.id === messageId) {
-          message.read = !message.read;
+          message.read = read ?? !message.read;
         }
 
         return message;

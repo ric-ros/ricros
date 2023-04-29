@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule, Platform } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { DataService } from '../../services/data.service';
 import { Message } from '../../types/message';
 import { Observable } from 'rxjs';
@@ -14,10 +14,10 @@ import { Observable } from 'rxjs';
   imports: [IonicModule, CommonModule],
 })
 export class ViewMessagePage implements OnInit {
-  public message$: Observable<Message | undefined> | undefined;
-  private data = inject(DataService);
   private activatedRoute = inject(ActivatedRoute);
-  private platform = inject(Platform);
+  private data = inject(DataService);
+
+  public message$: Observable<Message | undefined> | undefined;
 
   constructor() {}
 
@@ -27,6 +27,9 @@ export class ViewMessagePage implements OnInit {
     if (!id) {
       return;
     }
+
+    // set as read
+    this.data.toggleRead(+id, true);
 
     this.message$ = this.data.getMessageById$(+id);
   }
