@@ -2,7 +2,8 @@
   <ion-item-sliding #itemSlidingSection>
     <ion-item-options side="start" (ionSwipe)="markRead(message.id)">
       <ion-item-option color="secondary" expandable (click)="markRead(message.id)">
-        {{ message.read ? "Mark as Unread" : "Mark as Read" }}
+        <ion-icon name="mail-open" slot="icon-only" *ngIf="!message.read"></ion-icon>
+        <ion-icon name="mail" slot="icon-only" *ngIf="message.read"></ion-icon>
       </ion-item-option>
     </ion-item-options>
 
@@ -37,7 +38,8 @@
 
     <ion-item-options side="end" (ionSwipe)="markImportant(message.id)">
       <ion-item-option color="tertiary" expandable (click)="markImportant(message.id)">
-        {{ message.important ? "Mark as Unimportant" : "Mark as Important" }}
+        <ion-icon name="star" slot="icon-only" *ngIf="!message.important"></ion-icon>
+        <ion-icon name="star-outline" slot="icon-only" *ngIf="message.important"></ion-icon>
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>

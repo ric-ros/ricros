@@ -6,6 +6,7 @@ import { Platform } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { ThemeService } from '../shared/services/theme.service';
+import { SwUpdateService } from '../shared/services/sw-update.service';
 
 enum BREAK_POINTS {
   XS = 0,
@@ -24,11 +25,13 @@ enum BREAK_POINTS {
 })
 export class AppSelectorComponent implements OnDestroy {
   themeService = inject(ThemeService);
+  swUpdateService = inject(SwUpdateService);
+
   isMobile: boolean;
 
   destroy$ = new Subject<boolean>();
 
-  constructor(private platform: Platform, private router: Router) {
+  constructor() {
     this.themeService.setTheme();
 
     // Decomment this to enable mobile app with the TABS navigation.
@@ -42,6 +45,9 @@ export class AppSelectorComponent implements OnDestroy {
 
     // In the meantime, we will force the SIDEBAR navigation.
     this.isMobile = false;
+
+    // enable the SW Update Service.
+    this.swUpdateService;
   }
 
   /**
